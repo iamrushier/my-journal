@@ -1,18 +1,17 @@
-package com.rushproject.myJournal;
+package com.rushproject.myJournal.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
-public class MyJournalApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(MyJournalApplication.class, args);
+@Configuration
+@EnableTransactionManagement
+public class TransactionConfig {
+    @Bean
+    public PlatformTransactionManager getBean(MongoDatabaseFactory dbFactory) {
+        return new MongoTransactionManager(dbFactory);
     }
-
 }

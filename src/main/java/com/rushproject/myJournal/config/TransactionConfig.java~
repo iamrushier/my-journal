@@ -1,0 +1,4 @@
+package com.rushproject.myJournal.config;
+
+public class TransactionConfig {
+}
