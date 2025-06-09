@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: My Journal
+  main:
+    allow-circular-references: true
+
+  data:
+    mongodb:
+      uri: mongodb+srv://rushikeshsurve193:jp1HoCs2E82YVHec@cluster0.b2m0s9l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: journaldb
+      auto-index-creation: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.rushproject.myJournal: DEBUG
+
+weather:
+  api:
+    key: ca3e5e53fb8dd61e7977db0d177558d2

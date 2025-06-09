@@ -5,6 +5,8 @@ import com.rushproject.myJournal.entity.User;
 import com.rushproject.myJournal.repository.IJournalEntryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ public class JournalEntryService {
 
     @Autowired
     private UserService userService;
+
+
 
     @Transactional
     public void saveEntry(JournalEntry journalEntry, String userName) {
@@ -64,8 +68,8 @@ public class JournalEntryService {
             }
             return removed;
         } catch (Exception e) {
-            System.out.println(e);
-            throw new RuntimeException("Error occurred while deleting entry: "+e);
+
+            throw new RuntimeException("Error occurred while deleting entry: " + e);
         }
     }
 
