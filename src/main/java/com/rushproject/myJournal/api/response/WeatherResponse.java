@@ -2,15 +2,15 @@ package com.rushproject.myJournal.api.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 // De-serialization, JSON to Java object
 
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class WeatherResponse{
     private Current current;
 
@@ -19,6 +19,7 @@ public class WeatherResponse{
     }
     public class Current {
         private String observation_time;
+        @Getter
         private int temperature;
         private int weather_code;
         private List<String> weather_descriptions;
@@ -27,9 +28,6 @@ public class WeatherResponse{
         private int feelsLike;
         private String is_day;
 
-        public int getTemperature(){
-            return this.temperature;
-        }
     }
 }
 

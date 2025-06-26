@@ -1,7 +1,9 @@
 package com.rushproject.myJournal.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Document(collection = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     private ObjectId id;
@@ -21,7 +25,12 @@ public class User {
     @Indexed(unique = true)
     @NonNull
     private String userName;
-    @NonNull
+
+    private String email;
+
+    private Boolean sentimentAnalysis;
+
+        @NonNull
     private String password;
 
     @DBRef // Create reference of JournalEntries in Users collection

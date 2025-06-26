@@ -1,22 +1,23 @@
 spring:
-  application:
-    name: My Journal
-  main:
-    allow-circular-references: true
+  application.name: My Journal
+  main.allow-circular-references: true
 
-  data:
-    mongodb:
-      uri: mongodb+srv://rushikeshsurve193:jp1HoCs2E82YVHec@cluster0.b2m0s9l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      database: journaldb
-      auto-index-creation: true
+  data.mongodb:
+    uri: mongodb+srv://rushikeshsurve193:jp1HoCs2E82YVHec@cluster0.b2m0s9l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+    database: journaldb
+    auto-index-creation: true
 
-server:
-  port: 8080
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test@gmail.com
+    password: 1234 1234 1234
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
 
-logging:
-  level:
-    com.rushproject.myJournal: DEBUG
+server.port: 8080
 
-weather:
-  api:
-    key: ca3e5e53fb8dd61e7977db0d177558d2
+logging.level.com.rushproject.myJournal: DEBUG
+
+weather.api.key: ca3e5e53fb8dd61e7977db0d177558d2
