@@ -4,7 +4,7 @@ import com.rushproject.myJournal.api.response.WeatherResponse;
 import com.rushproject.myJournal.entity.User;
 import com.rushproject.myJournal.repository.IUserRepository;
 import com.rushproject.myJournal.service.UserService;
-import com.rushproject.myJournal.service.WeatherService;
+import com.rushproject.myJournal.service.IWeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class UserController {
     private IUserRepository userRepository;
 
     @Autowired
-    private WeatherService weatherService;
+    private IWeatherService weatherService;
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {

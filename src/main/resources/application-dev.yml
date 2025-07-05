@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/journaldb
+      database: journaldb
+      auto-index-creation: true
+    redis:
+      host: localhost
+      port: 6379
+      password: '' # No password for local Redis by default
+
+  mail:
+    host: localhost
+    port: 25 # Default SMTP port for local mail server
+    username: ''
+    password: ''
+    properties.mail.smtp:
+      auth: false
+      starttls.enable: false
+
+weather.api.key: your_local_weather_api_key # Replace with a local key or mock service if applicable

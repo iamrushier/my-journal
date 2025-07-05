@@ -2,13 +2,15 @@ package com.rushproject.myJournal.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile("prod")
 @Slf4j
-public class EmailService {
+public class ProdEmailService implements IEmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;

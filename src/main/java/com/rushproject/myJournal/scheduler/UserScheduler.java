@@ -5,7 +5,7 @@ import com.rushproject.myJournal.entity.JournalEntry;
 import com.rushproject.myJournal.entity.User;
 import com.rushproject.myJournal.enums.Sentiment;
 import com.rushproject.myJournal.repository.UserRepositoryImpl;
-import com.rushproject.myJournal.service.EmailService;
+import com.rushproject.myJournal.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserScheduler {
     @Autowired
-    private EmailService emailService;
+    private IEmailService emailService;
     @Autowired
     private UserRepositoryImpl userRepository;
 

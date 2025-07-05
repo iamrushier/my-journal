@@ -4,14 +4,15 @@ import com.rushproject.myJournal.api.response.WeatherResponse;
 import com.rushproject.myJournal.cache.AppCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class WeatherService {
+@Profile("prod")
+public class ProdWeatherService implements IWeatherService {
     @Value("${weather.api.key}")
     private String API_KEY;
 

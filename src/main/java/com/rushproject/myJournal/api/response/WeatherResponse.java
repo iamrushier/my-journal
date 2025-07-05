@@ -17,6 +17,8 @@ public class WeatherResponse{
     public Current getCurrent() {
         return current;
     }
+
+    @Data
     public class Current {
         private String observation_time;
         @Getter
