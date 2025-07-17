@@ -33,6 +33,14 @@ public class UserService {
             log.error("Error occurred while saving user", e);
         }
     }
+    public void updateUser(User user){
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        } catch (Exception e) {
+            log.error("Error occurred while updating user", e);
+        }
+    }
 
     public void saveAdmin(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
