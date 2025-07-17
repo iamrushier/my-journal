@@ -1,11 +1,9 @@
 package com.rushproject.myJournal.service;
 
-import com.rushproject.myJournal.entity.User;
+import com.rushproject.myJournal.domain.entity.User;
 import com.rushproject.myJournal.repository.IUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,25 +16,27 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class UserService {
+    private final IUserRepository userRepository;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    private IUserRepository userRepository;
+    public UserService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     public void saveNewUser(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setRoles(Arrays.asList("USER"));
+            user.setRoles(List.of("USER"));
             userRepository.save(user);
         } catch (Exception e) {
             log.error("Error occurred while saving user", e);
-//            throw new RuntimeException(e);
         }
     }
+
     public void saveAdmin(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER","ADMIN"));
+        user.setRoles(Arrays.asList("USER", "ADMIN"));
         userRepository.save(user);
     }
 
@@ -55,7 +55,6 @@ public class UserService {
     public void deleteById(ObjectId id) {
         userRepository.deleteById(id);
     }
-
 
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);

@@ -1,4 +1,4 @@
-package com.rushproject.myJournal.utils;
+package com.rushproject.myJournal.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,11 +12,9 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-    // 32  byte key
-    private String SECRET_KEY = "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V";
-
     private SecretKey getSigningKey() {
-        // Convert String to Key
+        // 32  byte key- Convert String to Key
+        String SECRET_KEY = "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V";
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
@@ -51,10 +49,10 @@ public class JwtUtil {
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
-                .header().empty().add("typ","JWT")
+                .header().empty().add("typ", "JWT")
                 .and()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // 5 minutes expiration time
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // 15 minutes expiration time
                 .signWith(getSigningKey())
                 .compact();
     }

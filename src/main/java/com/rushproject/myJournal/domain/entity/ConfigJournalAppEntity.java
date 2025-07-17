@@ -1,4 +1,4 @@
-package com.rushproject.myJournal.entity;
+package com.rushproject.myJournal.domain.entity;
 
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class ConfigJournalAppEntity {
-
     private String key;
     private String value;
 }

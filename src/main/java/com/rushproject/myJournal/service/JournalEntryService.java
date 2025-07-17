@@ -1,13 +1,12 @@
 package com.rushproject.myJournal.service;
 
-import com.rushproject.myJournal.entity.JournalEntry;
-import com.rushproject.myJournal.entity.User;
+import com.rushproject.myJournal.domain.entity.JournalEntry;
+import com.rushproject.myJournal.domain.entity.User;
 import com.rushproject.myJournal.repository.IJournalEntryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,33 +17,29 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class JournalEntryService {
+    private final IJournalEntryRepository journalEntryRepository;
+    private final UserService userService;
 
     @Autowired
-    private IJournalEntryRepository journalEntryRepository;
+    public JournalEntryService(IJournalEntryRepository journalEntryRepository, UserService userService) {
+        this.journalEntryRepository = journalEntryRepository;
+        this.userService = userService;
+    }
 
-    @Autowired
-    private UserService userService;
-
-
-
-    @Transactional
+    //    @Transactional
     public void saveEntry(JournalEntry journalEntry, String userName) {
-        try {
-            journalEntry.setDate(LocalDateTime.now());
-            User user = userService.findByUserName(userName);
-            JournalEntry saved = journalEntryRepository.save(journalEntry);
-            user.getJournalEntries().add(saved);
-            userService.saveUser(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Error occurred while saving entry");
-        }
+        journalEntry.setDate(LocalDateTime.now());
+        User user = userService.findByUserName(userName);
+        JournalEntry saved = journalEntryRepository.save(journalEntry);
+        user.getJournalEntries().add(saved);
+        userService.saveUser(user);
     }
 
     public void saveEntry(JournalEntry journalEntry) {
         try {
             journalEntryRepository.save(journalEntry);
         } catch (Exception e) {
-            log.error("Exception", e);
+            log.error("Exception: ", e);
         }
     }
 
@@ -56,7 +51,7 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
-    @Transactional
+//    @Transactional
     public boolean deleteById(ObjectId id, String userName) {
         boolean removed = false;
         try {
@@ -68,12 +63,7 @@ public class JournalEntryService {
             }
             return removed;
         } catch (Exception e) {
-
             throw new RuntimeException("Error occurred while deleting entry: " + e);
         }
     }
-
-//    public List<JournalEntry> findByUserName(String userName) { // localhost:8080/journal GET>
-//        return journalEntryRepository.findByUserName(userName);
-//    }
 }

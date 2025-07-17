@@ -1,7 +1,7 @@
-package com.rushproject.myJournal.service;
+package com.rushproject.myJournal.service.weather;
 
-import com.rushproject.myJournal.api.response.WeatherResponse;
-import com.rushproject.myJournal.cache.AppCache;
+import com.rushproject.myJournal.common.cache.AppCache;
+import com.rushproject.myJournal.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;

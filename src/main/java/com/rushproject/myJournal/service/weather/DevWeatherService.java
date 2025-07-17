@@ -1,6 +1,5 @@
-package com.rushproject.myJournal.service;
+package com.rushproject.myJournal.service.weather;
 
-import com.rushproject.myJournal.api.response.WeatherResponse;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

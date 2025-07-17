@@ -11,14 +11,18 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class RedisService {
+    private final RedisTemplate<String,String> redisTemplate;
+
     @Autowired
-    private RedisTemplate redisTemplate;
+    public RedisService(RedisTemplate<String,String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     public <T> T get(String key, Class<T> entityClass) {
         try {
-            Object o = redisTemplate.opsForValue().get(key);
+            Object obj = redisTemplate.opsForValue().get(key);
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(o.toString(), entityClass);
+            return mapper.readValue(String.valueOf(obj), entityClass);
         } catch (Exception e) {
             log.error("Error: " + e.getMessage());
             return null;
@@ -31,6 +35,7 @@ public class RedisService {
             String jsonValue = mapper.writeValueAsString(o);
             redisTemplate.opsForValue().set(key, jsonValue, ttl, TimeUnit.SECONDS);
         } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

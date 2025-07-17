@@ -1,7 +1,7 @@
 package com.rushproject.myJournal.controller;
 
-import com.rushproject.myJournal.cache.AppCache;
-import com.rushproject.myJournal.entity.User;
+import com.rushproject.myJournal.common.cache.AppCache;
+import com.rushproject.myJournal.domain.entity.User;
 import com.rushproject.myJournal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+    private final UserService userService;
+    private final AppCache appCache;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AppCache appCache;
+    public AdminController(UserService userService, AppCache appCache) {
+        this.userService = userService;
+        this.appCache = appCache;
+    }
 
     @GetMapping("/all-users")
     public ResponseEntity<List<User>> getAllUsers() {

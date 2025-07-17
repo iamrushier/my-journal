@@ -1,8 +1,8 @@
 package com.rushproject.myJournal.controller;
 
-import com.rushproject.myJournal.entity.User;
+import com.rushproject.myJournal.domain.entity.User;
 import com.rushproject.myJournal.service.UserService;
-import com.rushproject.myJournal.utils.JwtUtil;
+import com.rushproject.myJournal.security.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +18,18 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/public")
 public class PublicController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public PublicController(UserService userService, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping("/health-check")
     public String healthCheck() {
@@ -52,7 +54,7 @@ public class PublicController {
             String jwt = jwtUtil.generateToken(userDetails.getUsername());
             return new ResponseEntity<>(jwt, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            log.error("Exception occurred while createAUthenticationToken ",e);
+            log.error("Exception occurred while creating authentication token: ",e);
             return new ResponseEntity<>("Incorrect username or password",HttpStatus.BAD_REQUEST);
         }
     }

@@ -1,9 +1,10 @@
 package com.rushproject.myJournal.controller;
 
-import com.rushproject.myJournal.entity.JournalEntry;
-import com.rushproject.myJournal.entity.User;
+import com.rushproject.myJournal.domain.entity.JournalEntry;
+import com.rushproject.myJournal.domain.entity.User;
 import com.rushproject.myJournal.service.JournalEntryService;
 import com.rushproject.myJournal.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 @RequestMapping("/journal") // Apply mapping to whole class
 public class JournalEntryController {
+    private final JournalEntryService journalEntryService;
+    private final UserService userService;
 
     @Autowired
-    private JournalEntryService journalEntryService;
-
-    @Autowired
-    private UserService userService;
+    public JournalEntryController(JournalEntryService journalEntryService, UserService userService) {
+        this.journalEntryService = journalEntryService;
+        this.userService = userService;
+    }
 
     @GetMapping // /journal/abc
     public ResponseEntity<?> getAllJournalEntriesOfUser() { // localhost:8080/journal GET
@@ -47,6 +51,7 @@ public class JournalEntryController {
             journalEntryService.saveEntry(myEntry, userName);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
         } catch (Exception e) {
+            log.error("Error occurred while saving entry: "+e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -68,7 +73,7 @@ public class JournalEntryController {
     }
 
     @DeleteMapping("id/{myId}")
-    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myId) {
+    public ResponseEntity<HttpStatus> deleteJournalEntryById(@PathVariable ObjectId myId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         Optional<JournalEntry> journalEntry = journalEntryService.findById(myId);

@@ -1,6 +1,6 @@
 //package com.rushproject.myJournal.service;
 //
-//import com.rushproject.myJournal.entity.User;
+//import com.rushproject.myJournal.domain.entity.User;
 //import com.rushproject.myJournal.repository.IUserRepository;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.BeforeEach;

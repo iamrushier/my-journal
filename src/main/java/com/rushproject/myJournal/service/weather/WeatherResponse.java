@@ -1,4 +1,4 @@
-package com.rushproject.myJournal.api.response;
+package com.rushproject.myJournal.service.weather;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

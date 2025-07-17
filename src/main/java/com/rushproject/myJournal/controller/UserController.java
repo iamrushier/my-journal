@@ -1,10 +1,10 @@
 package com.rushproject.myJournal.controller;
 
-import com.rushproject.myJournal.api.response.WeatherResponse;
-import com.rushproject.myJournal.entity.User;
+import com.rushproject.myJournal.service.weather.WeatherResponse;
+import com.rushproject.myJournal.domain.entity.User;
 import com.rushproject.myJournal.repository.IUserRepository;
 import com.rushproject.myJournal.service.UserService;
-import com.rushproject.myJournal.service.IWeatherService;
+import com.rushproject.myJournal.service.weather.IWeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user") // Apply mapping to whole class
 public class UserController {
-    @Autowired
-    private UserService userService;
-
-    //    @GetMapping
-//    public List<User> getAllUsers() {
-//        return userService.getAll();
-//    }
-    @Autowired
-    private IUserRepository userRepository;
+    private final UserService userService;
+    private final IUserRepository userRepository;
+    private final IWeatherService weatherService;
 
     @Autowired
-    private IWeatherService weatherService;
+    public UserController(UserService userService, IUserRepository userRepository, IWeatherService weatherService) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.weatherService = weatherService;
+    }
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {

@@ -1,4 +1,4 @@
-package com.rushproject.myJournal.entity;
+package com.rushproject.myJournal.domain.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class User {
 
     private Boolean sentimentAnalysis;
 
-        @NonNull
+    @NonNull
     private String password;
 
     @DBRef // Create reference of JournalEntries in Users collection

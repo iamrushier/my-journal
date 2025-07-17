@@ -1,4 +1,4 @@
-package com.rushproject.myJournal.service;
+package com.rushproject.myJournal.service.email;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 @Profile("prod")
 @Slf4j
 public class ProdEmailService implements IEmailService {
+    private final JavaMailSender javaMailSender;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    public ProdEmailService(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     public void sendEmail(String to, String subject, String body) {
         try {
@@ -23,8 +26,7 @@ public class ProdEmailService implements IEmailService {
             mailMessage.setText(body);
             javaMailSender.send(mailMessage);
         } catch (Exception e) {
-            log.error("Exception while sending", e);
+            log.error("Exception while sending email: ", e);
         }
-
     }
 }

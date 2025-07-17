@@ -1,11 +1,11 @@
-package com.rushproject.myJournal.scheduler;
+package com.rushproject.myJournal.common.scheduler;
 
-import com.rushproject.myJournal.cache.AppCache;
-import com.rushproject.myJournal.entity.JournalEntry;
-import com.rushproject.myJournal.entity.User;
-import com.rushproject.myJournal.enums.Sentiment;
+import com.rushproject.myJournal.common.cache.AppCache;
+import com.rushproject.myJournal.domain.entity.JournalEntry;
+import com.rushproject.myJournal.domain.entity.User;
+import com.rushproject.myJournal.domain.enums.Sentiment;
 import com.rushproject.myJournal.repository.UserRepositoryImpl;
-import com.rushproject.myJournal.service.IEmailService;
+import com.rushproject.myJournal.service.email.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,16 +19,19 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserScheduler {
-    @Autowired
-    private IEmailService emailService;
-    @Autowired
-    private UserRepositoryImpl userRepository;
+    private final IEmailService emailService;
+    private final UserRepositoryImpl userRepository;
+    private final AppCache appCache;
 
     @Autowired
-    private AppCache appCache;
+    public UserScheduler(IEmailService emailService, UserRepositoryImpl userRepository, AppCache appCache) {
+        this.emailService = emailService;
+        this.userRepository = userRepository;
+        this.appCache = appCache;
+    }
 
-    @Scheduled(cron = "0 0 9 * * SUN")
 //    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 9 * * SUN")
     public void fetchUsersAndSendSaMail() {
         List<User> users = userRepository.getUserForSA();
         for (User user : users) {

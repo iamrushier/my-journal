@@ -1,6 +1,6 @@
-package com.rushproject.myJournal.cache;
+package com.rushproject.myJournal.common.cache;
 
-import com.rushproject.myJournal.entity.ConfigJournalAppEntity;
+import com.rushproject.myJournal.domain.entity.ConfigJournalAppEntity;
 import com.rushproject.myJournal.repository.ConfigJournalAppRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,12 @@ import java.util.Map;
 
 @Component
 public class AppCache {
+    private final ConfigJournalAppRepository configJournalAppRepository;
+
     @Autowired
-    private ConfigJournalAppRepository configJournalAppRepository;
+    public AppCache(ConfigJournalAppRepository configJournalAppRepository) {
+        this.configJournalAppRepository = configJournalAppRepository;
+    }
 
     public Map<String, String> APP_CACHE;
 

@@ -1,12 +1,10 @@
 package com.rushproject.myJournal.config;
 
-import com.rushproject.myJournal.filter.JwtFilter;
+import com.rushproject.myJournal.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,10 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration // Marks this class as a configuration class.
 @EnableWebSecurity // Enables Spring Security for the app.
 public class SpringSecurityConfig {
+    private final UserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
+
     @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtFilter jwtFilter;
+    public SpringSecurityConfig(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
