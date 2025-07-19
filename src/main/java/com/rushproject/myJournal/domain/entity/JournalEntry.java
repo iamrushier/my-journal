@@ -1,5 +1,7 @@
 package com.rushproject.myJournal.domain.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.rushproject.myJournal.domain.enums.Sentiment;
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class JournalEntry {
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 
     @NonNull

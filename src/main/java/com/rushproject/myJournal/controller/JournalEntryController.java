@@ -37,23 +37,11 @@ public class JournalEntryController {
 
         User user = userService.findByUserName(userName);
         List<JournalEntry> all = user.getJournalEntries();
-        if (all != null & !all.isEmpty()) {
-            return new ResponseEntity<>(all, HttpStatus.OK);
+        if (all == null) {
+            return new ResponseEntity<>("No entries found.", HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
-    @PostMapping
-    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry) { // localhost:8080/journal POST
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            journalEntryService.saveEntry(myEntry, userName);
-            return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error("Error occurred while saving entry: "+e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @GetMapping("id/{myId}")
@@ -70,6 +58,19 @@ public class JournalEntryController {
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping
+    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry) { // localhost:8080/journal POST
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
+            journalEntryService.saveEntry(myEntry, userName);
+            return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error occurred while saving entry: "+e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("id/{myId}")

@@ -58,4 +58,15 @@ public class UserController {
         }
         return new ResponseEntity<>("Hi " + authentication.getName() + greeting, HttpStatus.OK);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        User user = userService.findByUserName(userName);
+
+        // Remove password before returning for security
+//        user.setPassword(null);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }
