@@ -7,12 +7,16 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import AutoStoriesIcon from "@mui/icons-material/AutoStories"; // Journal-style icon
-import { useNavigate } from "react-router-dom";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const isLoggedIn = !!localStorage.getItem("jwt");
+
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   const handleLogout = () => {
     localStorage.removeItem("jwt");
@@ -20,32 +24,45 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "#3f51b5" }}>
+    <AppBar
+      position="static"
+      sx={{
+        bgcolor: isAdminPage ? "#b71c1c" : "#3f51b5", // Deep red for admin, blue for normal
+      }}
+    >
       <Toolbar>
         <IconButton edge="start" color="inherit" sx={{ mr: 1 }}>
-          <AutoStoriesIcon />
+          {isAdminPage ? <AdminPanelSettingsIcon /> : <AutoStoriesIcon />}
         </IconButton>
 
         <Typography
           variant="h6"
           component="div"
           sx={{ flexGrow: 1, cursor: "pointer" }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate(isAdminPage ? "/admin" : "/")}
         >
-          MyJournal
+          {isAdminPage ? "Admin Panel" : "MyJournal"}
         </Typography>
 
         {isLoggedIn ? (
           <>
-            <Button color="inherit" onClick={() => navigate("/dashboard")}>
-              Dashboard
-            </Button>
-            <Button color="inherit" onClick={() => navigate("/user")}>
-              Profile
-            </Button>
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
+            {isAdminPage ? (
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button color="inherit" onClick={() => navigate("/dashboard")}>
+                  Dashboard
+                </Button>
+                <Button color="inherit" onClick={() => navigate("/user")}>
+                  Profile
+                </Button>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            )}
           </>
         ) : (
           <>

@@ -9,6 +9,8 @@ import UserPage from "./pages/UserPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Header from "./componenets/Header";
 import MainLayout from "./layout/MainLayout";
+import AdminPage from "./pages/AdminPage";
+import { JournalEntriesContextProvider } from "../context/JournalEntriesContext";
 function App() {
   healthCheck()
     .then((val) => console.log(val))
@@ -37,7 +39,9 @@ function App() {
             path="/dashboard"
             element={
               <MainLayout>
-                <DashboardPage />
+                <JournalEntriesContextProvider>
+                  <DashboardPage />
+                </JournalEntriesContextProvider>
               </MainLayout>
             }
           />
@@ -49,7 +53,14 @@ function App() {
               </MainLayout>
             }
           />
-
+          <Route
+            path="/admin"
+            element={
+              <MainLayout>
+                <AdminPage />
+              </MainLayout>
+            }
+          />
           <Route
             path="*"
             element={

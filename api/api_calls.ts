@@ -63,6 +63,24 @@ export const updateJournalEntry = async (
 };
 
 export const deleteJournalEntry = async (id: string): Promise<void> => {
-  console.log(id);
   await journalApi.delete(`/journal/id/${id}`, authHeader());
+};
+
+export const getAllUsers = async (): Promise<User[]> => {
+  const token = localStorage.getItem("jwt");
+  const response = await journalApi.get("/admin/users", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const deleteUserByUsername = async (username: string): Promise<void> => {
+  const token = localStorage.getItem("jwt");
+  await journalApi.delete(`/admin/user/${username}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
