@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { signUp } from "../../api/api_calls";
 import { useNavigate } from "react-router-dom";
+import Header from "../componenets/Header";
 
 export const SignupPage = () => {
   const [userName, setUserName] = useState("");

@@ -5,18 +5,62 @@ import LoginPage from "./pages/LoginPage";
 import { BrowserRouter } from "react-router-dom";
 import { SignupPage } from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
+import UserPage from "./pages/UserPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import Header from "./componenets/Header";
+import MainLayout from "./layout/MainLayout";
 function App() {
   healthCheck()
     .then((val) => console.log(val))
     .catch((err) => console.log(err));
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <MainLayout>
+                <LoginPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <MainLayout>
+                <SignupPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <MainLayout>
+                <DashboardPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/user"
+            element={
+              <MainLayout>
+                <UserPage />
+              </MainLayout>
+            }
+          />
+
+          <Route
+            path="*"
+            element={
+              <MainLayout>
+                <NotFoundPage />
+              </MainLayout>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
