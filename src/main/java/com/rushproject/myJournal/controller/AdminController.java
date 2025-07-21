@@ -40,4 +40,16 @@ public class AdminController {
     public void clearAppCache(){
         appCache.init();
     }
+
+    @DeleteMapping("/user/{username}")
+    public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
+        User user = userService.findByUserName(username);
+        if (user != null) {
+            userService.deleteByUserName(username);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

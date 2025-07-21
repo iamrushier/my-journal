@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUserById(@RequestBody User user) {
+    public ResponseEntity<?> deleteUserById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.deleteByUserName(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -69,4 +69,20 @@ public class UserController {
 //        user.setPassword(null);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @PutMapping("/sentiment-analysis")
+    public ResponseEntity<Void> updateSentimentAnalysis(@RequestParam boolean enabled) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+
+        User user = userService.findByUserName(userName);
+        if (user != null) {
+            user.setSentimentAnalysis(enabled);
+            userService.updateUser(user);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

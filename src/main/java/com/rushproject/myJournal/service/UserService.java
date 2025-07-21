@@ -28,19 +28,28 @@ public class UserService {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRoles(List.of("USER"));
+            user.setSentimentAnalysis(false);
             userRepository.save(user);
         } catch (Exception e) {
             log.error("Error occurred while saving user", e);
         }
     }
-    public void updateUser(User user){
+    public void updateUser(User user) {
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User existingUser = userRepository.findById(user.getId()).orElse(null);
+            if (existingUser == null) return;
+
+            // Only encode if password is different
+            if (!user.getPassword().equals(existingUser.getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+
             userRepository.save(user);
         } catch (Exception e) {
             log.error("Error occurred while updating user", e);
         }
     }
+
 
     public void saveAdmin(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -66,5 +75,8 @@ public class UserService {
 
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
+    }
+    public void deleteByUserName(String userName) {
+        userRepository.deleteByUserName(userName);
     }
 }
