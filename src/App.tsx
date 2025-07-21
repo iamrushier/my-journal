@@ -3,14 +3,15 @@ import { healthCheck } from "../api/api_calls";
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import { BrowserRouter } from "react-router-dom";
-import { SignupPage } from "./pages/SignUpPage";
+import { SignupPage } from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
 import UserPage from "./pages/UserPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import Header from "./componenets/Header";
 import MainLayout from "./layout/MainLayout";
 import AdminPage from "./pages/AdminPage";
 import { JournalEntriesContextProvider } from "../context/JournalEntriesContext";
+import ProtectedRoute from "./componenets/ProtectedRoute";
+
 function App() {
   healthCheck()
     .then((val) => console.log(val))
@@ -35,32 +36,35 @@ function App() {
               </MainLayout>
             }
           />
-          <Route
-            path="/dashboard"
-            element={
-              <MainLayout>
-                <JournalEntriesContextProvider>
-                  <DashboardPage />
-                </JournalEntriesContextProvider>
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/user"
-            element={
-              <MainLayout>
-                <UserPage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <MainLayout>
-                <AdminPage />
-              </MainLayout>
-            }
-          />
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path="/dashboard"
+              element={
+                <MainLayout>
+                  <JournalEntriesContextProvider>
+                    <DashboardPage />
+                  </JournalEntriesContextProvider>
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/user"
+              element={
+                <MainLayout>
+                  <UserPage />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <MainLayout>
+                  <AdminPage />
+                </MainLayout>
+              }
+            />
+          </Route>
           <Route
             path="*"
             element={
