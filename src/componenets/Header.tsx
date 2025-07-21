@@ -109,7 +109,9 @@ const Header = () => {
                   }}
                 >
                   <MenuItem disabled>
-                    <Typography variant="subtitle1">{user?.username}</Typography>
+                    <Typography variant="subtitle1">
+                      {user?.userName}
+                    </Typography>
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={handleProfileNavigation}>

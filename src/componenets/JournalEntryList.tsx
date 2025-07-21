@@ -47,8 +47,9 @@ const JournalEntryList: React.FC = () => {
         {entriesList.map((entry) => (
           <ListItem
             key={entry.id}
-            button
-            onClick={() => dispatch({ type: "SET_CURRENT_ENTRY", payload: entry })}
+            onClick={() =>
+              dispatch({ type: "SET_CURRENT_ENTRY", payload: entry })
+            }
             secondaryAction={
               <IconButton
                 edge="end"
