@@ -20,6 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { getCurrentUser } from "../../api/api_calls";
 import { User } from "../../types";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Header = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const isAdminPage = location.pathname.startsWith("/admin");
+  const hasAdminRole = user?.roles?.includes("ADMIN");
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -56,8 +58,8 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const handleProfileNavigation = () => {
-    navigate("/user");
+  const handleNavigation = (path: string) => {
+    navigate(path);
     handleMenuClose();
   };
 
@@ -85,9 +87,14 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             {isAdminPage ? (
-              <Button color="inherit" onClick={handleLogout}>
-                Logout
-              </Button>
+              <>
+                <Button color="inherit" onClick={() => navigate("/user")}>
+                  User Page
+                </Button>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
             ) : (
               <>
                 <Button color="inherit" onClick={() => navigate("/dashboard")}>
@@ -114,12 +121,20 @@ const Header = () => {
                     </Typography>
                   </MenuItem>
                   <Divider />
-                  <MenuItem onClick={handleProfileNavigation}>
+                  <MenuItem onClick={() => handleNavigation("/user")}>
                     <ListItemIcon>
                       <EditIcon fontSize="small" />
                     </ListItemIcon>
                     Edit Profile
                   </MenuItem>
+                  {hasAdminRole && (
+                    <MenuItem onClick={() => handleNavigation("/admin")}>
+                      <ListItemIcon>
+                        <SupervisorAccountIcon fontSize="small" />
+                      </ListItemIcon>
+                      Admin Page
+                    </MenuItem>
+                  )}
                   <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                       <LogoutIcon fontSize="small" />
