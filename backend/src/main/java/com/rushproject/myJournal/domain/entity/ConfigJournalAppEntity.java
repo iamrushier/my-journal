@@ -1,0 +1,17 @@
+package com.rushproject.myJournal.domain.entity;
+
+import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
+// POJO class - Plain Old Java Object
+@Document(collection = "config_journal_app")
+@Data
+@NoArgsConstructor
+public class ConfigJournalAppEntity {
+    private String key;
+    private String value;
+}

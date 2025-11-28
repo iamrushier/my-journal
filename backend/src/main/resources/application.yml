@@ -1,0 +1,8 @@
+spring:
+  application.name: My Journal
+  main.allow-circular-references: true
+  profiles.active: dev
+
+server.port: 8080
+
+logging.level.com.rushproject.myJournal: DEBUG
