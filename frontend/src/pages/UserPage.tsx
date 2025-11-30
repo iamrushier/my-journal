@@ -49,7 +49,7 @@ const UserPage = () => {
         setEditedUser(userData);
         if (userData.sentimentAnalysis)
           setSentimentPreference(userData.sentimentAnalysis);
-      } catch (err) {
+      } catch (err:any) {
         console.error("Failed to fetch user data", err);
         if (err.response && err.response.status === 401) {
           navigate("/login");
