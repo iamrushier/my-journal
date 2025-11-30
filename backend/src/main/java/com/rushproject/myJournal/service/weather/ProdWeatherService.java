@@ -1,6 +1,6 @@
 package com.rushproject.myJournal.service.weather;
 
-import com.rushproject.myJournal.common.cache.AppCache;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rushproject.myJournal.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,37 +13,53 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @Profile("prod")
 public class ProdWeatherService implements IWeatherService {
+
     @Value("${weather.api.key}")
     private String API_KEY;
 
-//    private static final String API_STRING = "http://api.weatherstack.com/current?access_key=API_KEY&query=CITY";
-
-    @Autowired
-    private AppCache appCache;
-    @Autowired
-    private RestTemplate restTemplate;
+    private static final String API_TEMPLATE = "http://api.weatherstack.com/current?access_key=%s&query=%s";
 
     @Autowired
     private RedisService redisService;
 
-    public WeatherResponse getWeather(String city) {
+    @Autowired
+    private RestTemplate restTemplate;
 
-        WeatherResponse cached = redisService.get("weather_of_" + city, WeatherResponse.class);
-        if (cached != null) return cached;
-        else {
-            String finalAPI = appCache.APP_CACHE.get("weather_api").replace("<city>", city).replace("<api_key>", API_KEY);
-            ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class);
-            WeatherResponse body = response.getBody();
-            if (body != null) redisService.set("weather_of_" + city, body, 300L);
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Override
+    public WeatherResponse getWeather(String city) {
+        try {
+            WeatherResponse cached = redisService.get("weather_of_" + city, WeatherResponse.class);
+            if (cached != null) {
+                System.out.println("Returning cached weather data for: " + city);
+                return cached;
+            }
+
+            String url = String.format(API_TEMPLATE, API_KEY, city);
+            System.out.println("Fetching weather data from URL: " + url);
+
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+            String responseBody = response.getBody();
+            System.out.println("Raw JSON response: " + responseBody);
+
+            WeatherResponse body = objectMapper.readValue(responseBody, WeatherResponse.class);
+            System.out.println("Deserialized WeatherResponse object: " + body);
+            if (body != null) {
+                 if(body.getCurrent() == null) {
+                    System.out.println("Current weather data is null after deserialization.");
+                } else {
+                    System.out.println("Current weather temperature: " + body.getCurrent().getTemperature());
+                }
+                redisService.set("weather_of_" + city, body, 300L);
+            }
+
             return body;
+        } catch (Exception e) {
+            System.err.println("Error during weather data fetching: " + e.getMessage());
+            e.printStackTrace();
+            return null;
         }
-//  //    For POST Request
-//        String requestBody = "{" +
-//                "\"userName\": \"tina\"," +
-//                "\"password\": \"tina\"" +
-//                ";";
-//
-//        HttpEntity<String> httpEntity = new HttpEntity<>(requestBody);
-//        ResponseEntity<WeatherResponse> response = restTemplate.exchange(API_STRING, HttpMethod.POST, requestBody, WeatherResponse.class);
     }
 }

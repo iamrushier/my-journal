@@ -11,7 +11,7 @@ public class DevWeatherService implements IWeatherService {
     public WeatherResponse getWeather(String city) {
         // Return a hardcoded/dummy weather response for development
         WeatherResponse weatherResponse = new WeatherResponse();
-        WeatherResponse.Current current = weatherResponse.new Current();
+        WeatherResponse.Current current = new WeatherResponse.Current();
         current.setTemperature(25); // Dummy temperature
         current.setFeelsLike(27); // Dummy feels like temperature
         current.setWeather_descriptions(java.util.Collections.singletonList("Partly cloudy")); // Dummy description

@@ -1,7 +1,7 @@
 spring:
   application.name: My Journal
   main.allow-circular-references: true
-  profiles.active: dev
+  profiles.active: ${SPRING_PROFILES_ACTIVE}
 
 server.port: 8080
 

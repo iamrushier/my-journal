@@ -9,6 +9,7 @@ import UserPage from "./pages/UserPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import MainLayout from "./layout/MainLayout";
 import AdminPage from "./pages/AdminPage";
+import HomePage from "./pages/HomePage";
 import { JournalEntriesContextProvider } from "../context/JournalEntriesContext";
 import ProtectedRoute from "./componenets/ProtectedRoute";
 
@@ -20,6 +21,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/"
+            element={
+              <MainLayout>
+                <HomePage />
+              </MainLayout>
+            }
+          />
           <Route
             path="/login"
             element={

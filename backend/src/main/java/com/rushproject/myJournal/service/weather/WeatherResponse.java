@@ -19,7 +19,7 @@ public class WeatherResponse{
     }
 
     @Data
-    public class Current {
+    public static class Current {
         private String observation_time;
         @Getter
         private int temperature;
