@@ -52,7 +52,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String greeting = "";
         WeatherResponse weatherResponse = weatherService.getWeather("Mumbai");
-        if (weatherResponse != null) {
+        if (weatherResponse != null && weatherResponse.getCurrent() != null) {
             int temperature = weatherResponse.getCurrent().getTemperature();
             greeting = ", weather feels like " + temperature + " degrees in Mumbai";
         }
